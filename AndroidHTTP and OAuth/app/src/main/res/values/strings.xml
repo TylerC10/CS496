@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AndroidHTTP</string>
+    <string name="activityComplete">AuthComplete</string>
+</resources>

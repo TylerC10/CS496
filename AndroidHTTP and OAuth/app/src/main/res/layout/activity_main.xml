@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteY="8dp"
+    tools:layout_editor_absoluteX="8dp">
+    <EditText
+        android:id="@+id/postInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textAlignment="center"
+        android:hint="Write New Post"/>
+    <Button
+        android:id="@+id/sendPost"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Send New Post"
+        android:textAlignment="center" />
+    <Button
+        android:id="@+id/getPosts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Get Posts"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="Last Three Posts"
+        android:textAlignment="center" />
+    <ListView
+        android:id="@+id/postLists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ListView>
+</LinearLayout>
