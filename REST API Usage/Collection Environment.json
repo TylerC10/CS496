@@ -1,0 +1,28 @@
+{
+  "id": "86b16fdd-1bb8-9a49-254e-dc0c15c67738",
+  "name": "Gists Environment",
+  "values": [
+    {
+      "enabled": true,
+      "key": "OAuthToken",
+      "value": "Bearer 67b5394f710f853a66d5f5cd349e0b991d423f15",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "variable_key",
+      "value": "variable_value",
+      "type": "text"
+    },
+    {
+      "enabled": true,
+      "key": "Date",
+      "value": "Wed, 05 Jul 2017 14:48:10 GMT",
+      "type": "text"
+    }
+  ],
+  "timestamp": 1499269126613,
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2017-07-06T13:45:16.332Z",
+  "_postman_exported_using": "Postman/5.0.2"
+}

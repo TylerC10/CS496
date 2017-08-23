@@ -1,0 +1,568 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Gists",
+		"_postman_id": "57bcb42c-0c2c-27cc-5e08-b9f8911df0f2",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get public gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var holder = [];",
+							"for(var x in res){",
+							"    holder.push(res[x]);",
+							"}",
+							"",
+							"tests[\"There are 30 gists\"] = holder.length == 30;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/public",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Get public gists"
+			},
+			"response": []
+		},
+		{
+			"name": "Get wolfordj public gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"",
+							"var holder = [];",
+							"for(var x in res){",
+							"    holder.push(res[x]);",
+							"}",
+							"",
+							"tests[\"User wolfordj has at least one public Gist\"] = holder.length >= 1;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/users/wolfordj/gists",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Confirm user wolfordj has at least one public Gist"
+			},
+			"response": []
+		},
+		{
+			"name": "Get current number of gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"",
+							"var holder = [];",
+							"for(var x in res){",
+							"    holder.push(res[x]);",
+							"}",
+							"",
+							"var count = holder.length;",
+							"",
+							"postman.setGlobalVariable(\"gistCount\", count);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"my first gist\",\r\n  \"public\": true,\r\n  \"files\": {\r\n    \"file1.txt\": {\r\n      \"content\": \"First test\"\r\n    }\r\n  }\r\n}"
+				},
+				"description": "Getting the current number of gists to test against the number once it is updated."
+			},
+			"response": []
+		},
+		{
+			"name": "Create new gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"add new gist\",\r\n  \"public\": true,\r\n  \"files\": {\r\n    \"file2.txt\": {\r\n      \"content\": \"Create new gist\"\r\n    }\r\n  }\r\n}"
+				},
+				"description": "Create a new gist using POST."
+			},
+			"response": []
+		},
+		{
+			"name": "Test increment by 1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"",
+							"var holder = [];",
+							"for(var x in res){",
+							"    holder.push(res[x]);",
+							"}",
+							"console.log(holder.length);",
+							"console.log(postman.getGlobalVariable(\"gistCount\"));",
+							"var newCount = postman.getGlobalVariable(\"gistCount\");",
+							"newCount++;",
+							"//console.log(newCount);",
+							"",
+							"tests[\"Number of associated gists increased by 1\"] = holder.length == newCount;",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": "Get the new number of gists and compare it to old number."
+			},
+			"response": []
+		},
+		{
+			"name": "Create new gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"",
+							"postman.setGlobalVariable(\"gistID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"add new gist\",\r\n  \"public\": true,\r\n  \"files\": {\r\n    \"file2.txt\": {\r\n      \"content\": \"Test content creation\"\r\n    }\r\n  }\r\n}"
+				},
+				"description": "Test content creation"
+			},
+			"response": []
+		},
+		{
+			"name": "Test created content is correct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Has correct text\"] = responseBody.has(\"Test content creation\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Testing to see if the content that was sent was created properly."
+			},
+			"response": []
+		},
+		{
+			"name": "Edit the gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"add new gist\",\r\n  \"public\": true,\r\n  \"files\": {\r\n    \"file2.txt\": {\r\n      \"content\": \"Edit content\"\r\n    }\r\n  }\r\n}"
+				},
+				"description": "Editing the gist"
+			},
+			"response": []
+		},
+		{
+			"name": "Check if content was edited correctly",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Content edited properly\"] = responseBody.has(\"Edit content\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Star a gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Gist was starred\"] = responseCode.code === 204;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID}}/star",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check that the gist is starred",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Gist is starred\"] = responseCode.code === 204;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID}}/star",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "New gist to test list of starred gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"",
+							"postman.setGlobalVariable(\"gistID2\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"description\": \"add new gist\",\r\n  \"public\": true,\r\n  \"files\": {\r\n    \"file2.txt\": {\r\n      \"content\": \"New gist for starred gists\"\r\n    }\r\n  }\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Star new gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Gist was starred\"] = responseCode.code === 204;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID2}}/star",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm list of starred gists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"First correct starred ID\"] = responseBody.has(postman.getGlobalVariable(\"gistID\"));",
+							"tests[\"Second correct starred ID\"] = responseBody.has(postman.getGlobalVariable(\"gistID2\"));"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/starred",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Unstar a gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Unstarred a gist\"] = responseCode.code === 204;",
+							"",
+							""
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID2}}/star",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Check if unstarred by direct call",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Check if unstarred by accessing directly\"] = responseCode.code === 404;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID2}}/star",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Delete gist\"] = responseCode.code === 204;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID2}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm deleted gist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Gist is deleted (404 error)\"] = responseCode.code === 404;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://api.github.com/gists/{{gistID2}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "{{OAuthToken}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
