@@ -1,0 +1,954 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Final Project",
+		"_postman_id": "7862f11d-bb0b-e02c-a4f2-81e4e8e613af",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create new person with first user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"user1ID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people",
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"John\",\"passion\":\"animals\",\"age\":22}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Return user data with proper header",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Returned user data\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Replace user information",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Replaced User\"] = responseBody.has(\"successfully\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Tim\", \"passion\":\"helping homeless\",\"age\":19}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user was replaced",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Confirm user was replaced\"] = responseBody.has(\"Tim\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Edited User\"] = responseBody.has(\"successfully\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Samantha\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user data was edited",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Confirm user data was updated\"] = responseBody.has(\"Samantha\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete person with user1",
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm person deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User is deleted\"] = responseCode.code === 404;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create another persion with first user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"user1ID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people",
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"John\",\"passion\":\"animals\",\"age\":22}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm second user cannot access first user's data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User2 cannot access user1 data\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new person with second user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"user2ID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people",
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"Jessica\",\"passion\":\"parks\",\"age\":19}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user1 cannot access user2 data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User1 cannot access user2 data\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user2ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user2 can access created data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Confirm user2 can access data\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user2ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new project with user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"proj1ID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects",
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"help\", \"data\":\"8/1\", \"focus\":\"parks\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user1 can see project information",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Returned project data\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Replace a project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Replaced Project\"] = responseBody.has(\"successfully\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"help2\", \"data\":\"8/2\", \"focus\":\"parking\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm project was replaced",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Confirm project was replaced\"] = responseBody.has(\"parking\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit project information",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Edited User\"] = responseBody.has(\"successfully\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"updateProject\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm project was updated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Confirm project was updated\"] = responseBody.has(\"updateProject\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Assign person to a project",
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"volunteer\":\"{{user1ID}}\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm person assigned to project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"//tests[\"Confirm user assigned to project\"] = responseBody.has(\"{{user1ID}}\"\");",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"",
+							"var checkAssign = res[\"volunteer\"];",
+							"",
+							"tests[\"Confirm user assigned to project\"] = checkAssign !== null;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete person with user1",
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm deleting user removes them from volunteering for project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"var res = JSON.parse(responseBody);",
+							"",
+							"var checkAssign = res[\"volunteer\"];",
+							"",
+							"tests[\"Confirm deleting user removes them from project\"] = checkAssign === null;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user2 cannot access user1 project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User2 cannot access user1 project\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Project",
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm project deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Project is deleted\"] = responseCode.code === 404;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create another new person",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"user1ID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people",
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"John\",\"passion\":\"animals\",\"age\":22}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm second user cannot replace user1",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User2 cannot overwrite user1 data\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"new\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user2 cannot overwrite user1 data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User2 cannot replace user1 data\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/people/{{user1ID}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"newName\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create another new project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"proj1ID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects",
+				"method": "POST",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user1}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"help\", \"data\":\"8/1\", \"focus\":\"parks\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user2 cannot overwrite user1 project",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User2 cannot overwrite user1 project\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"newName\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm user2 cannot change user1 project data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"User2 cannot overwrite user1 project data\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/projects/{{proj1ID}}",
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "access_header",
+						"value": "{{user2}}",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"newName\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
