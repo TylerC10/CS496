@@ -1,0 +1,574 @@
+{
+	"variables": [],
+	"info": {
+		"name": "REST Planning and Implementation",
+		"_postman_id": "ae1edc00-60a1-0638-2bb3-a82098f1bc3f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create new boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"boatID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "https://boats-and-slips-173720.appspot.com/boat",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"firstBoat\", \"type\":\"small\", \"length\":100}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"slipID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"number\":2}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Edited boat\"] = responseBody.has(\"newName\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"newName\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Edit slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Edited slip\"] = responseBody.has(12);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"number\":12}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "See all boats",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Showing all boats\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "See specific boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Returned one boat\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "See all slips",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Showing all slips\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "See specific slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Returned one slip\"] = responseCode.code === 200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{slipID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Put boat in a slip",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"current_boat\":\"{{boatID}}\", \"arrival_date\":\"7/1/2017\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm boat is in slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Boat in slip\"] = responseBody.has(\"False\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Put boat to sea",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm boat is at sea",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Boat is at sea\"] = responseBody.has(\"True\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm slip is empty",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Slip is now empty\"] = responseBody.has(\"None\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Put boat back in slip",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"current_boat\":\"{{boatID}}\", \"arrival_date\":\"7/1/2017\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete boat",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm boat deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Boat is deleted\"] = responseBody.has(\"None\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm empty slip after deleted boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Slip empty after deleting boat\"] = responseBody.has(\"None\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Create new boat",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"boatID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"name\":\"newTestBoat\", \"type\":\"small\", \"length\":100}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Put newly created boat in sllip",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"current_boat\":\"{{boatID}}\", \"arrival_date\":\"7/1/2017\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Delete slip",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "DELETE",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm boat is at sea",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Boat is deleted\"] = responseBody.has(\"True\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm slip is deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Slip is deleted\"] = responseBody.has(\"None\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Make new slip",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Successful POST request\"] = responseCode.code === 201 || responseCode.code === 202;",
+							"",
+							"var res = JSON.parse(responseBody);",
+							"var id = res.id;",
+							"console.log(id);",
+							"",
+							"postman.setEnvironmentVariable(\"slipID\", id);"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"number\":3}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Put boat in newly created slip",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"current_boat\":\"{{boatID}}\", \"arrival_date\":\"7/1/2017\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm occupied slip cannot be assigned to",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Can't place in occupied slip\"] = responseCode.code === 403;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/slip/{{slipID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"current_boat\":\"{{boatID}}\", \"arrival_date\":\"7/1/2017\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Put boat back to sea",
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm boat at sea can't be put to sea",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Confirm boat can't be put to sea if currently in sea.\"] = responseBody.has(\"Cannot assign\");"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://boats-and-slips-173720.appspot.com/boat/{{boatID}}",
+				"method": "PUT",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
